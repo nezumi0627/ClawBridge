@@ -13,8 +13,9 @@ ClawBridge/
 │   ├── api/            # API エンドポイント、コントローラ
 │   ├── services/       # ビジネスロジック、オーケストレーション
 │   └── providers/      # 各 AI バックエンドとの通信
+├── web/                # モダン Web UI (Next.js / TypeScript / Tailwind CSS)
+├── public/             # 静的配信ディレクトリ (web/ のビルド成果物が配置される)
 ├── utils/              # パーサ、フォーマッタ、コンテンツ処理
-├── public/             # 管理用 Web UI (HTML/CSS/JS)
 ├── config/             # 設定ファイル (settings.json 等)
 ├── bin/                # インストーラ、CLI ツール
 └── g4f_server.py       # G4F 専用 Python バックエンド
@@ -42,6 +43,14 @@ ClawBridge の「頭脳」にあたる部分です。
 データ変換の心臓部です。
 - **`parsers.js`**: 自由記述形式のレスポンスから JSON ツールコールやメッセージ本文を高精度に抽出。
 - **`content.js`**: プロンプト前処理とメタデータ除去。
+
+### 🌐 Web UI (`web/`)
+統合管理ツールとしてのフロントエンドです。
+- **Next.js & React**: モダンなフレームワークによる高速な操作感。
+- **Dashboard**: サーバのステータスや接続状況を一覧表示。
+- **Playground**: 直感的なチャットインターフェースでモデルの挙動をテスト。
+- **Settings**: `settings.json` を GUI から編集・保存。
+- **Logs**: リアルタイムでサーバログを確認。
 
 ---
 
