@@ -26,8 +26,9 @@ router.get('/v1/models', (req, res) => {
 // Get Status/Stats
 router.get('/api/status', (req, res) => {
     const ChatService = require('../services/ChatService');
+    const { version } = require('../../package.json');
     res.json({
-        version: '0.3.0',
+        version: version,
         port: Config.get('server.port'),
         stats: ChatService.stats,
         providers: {
@@ -146,6 +147,22 @@ router.post('/api/test/run', async (req, res) => {
     TestService.runAllTests(req.body).catch(e => {
         console.error('Test suite error:', e);
     });
+});
+
+// Stop all running tests
+router.post('/api/test/stop', (req, res) => {
+    const TestService = require('../services/TestService');
+    const stopped = TestService.stopTests();
+    res.json({ success: stopped, message: stopped ? 'Tests stopped' : 'No tests running' });
+});
+
+// Run test on a single combination
+router.post('/api/test/single', async (req, res) => {
+    const { provider, model } = req.body;
+    const TestService = require('../services/TestService');
+    const result = await TestService.testCombination(provider, model);
+    TestService.updateResult(result);
+    res.json(result);
 });
 
 // Run all tests and wait for results

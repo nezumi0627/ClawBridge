@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ConsoleSidebar } from "@/components/console-sidebar"
 import { DashboardView } from "@/components/views/dashboard-view"
+import { ArenaView } from "@/components/views/ArenaView"
 import { PlaygroundView } from "@/components/views/playground-view"
 import { LogsView } from "@/components/views/logs-view"
 import { SettingsView } from "@/components/views/settings-view"
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
   LayoutDashboard,
+  Trophy,
   MessageSquare,
   ScrollText,
   Settings,
@@ -22,14 +24,16 @@ import { cn } from "@/lib/utils"
 
 const viewTitles: Record<string, string> = {
   dashboard: "Dashboard",
+  arena: "Arena",
   playground: "Playground",
   logs: "System Logs",
   settings: "Settings",
-  connectivity: "Connectivity",
+  connectivity: "Model Test",
 }
 
 const mobileNavItems = [
   { id: "dashboard", icon: LayoutDashboard },
+  { id: "arena", icon: Trophy },
   { id: "playground", icon: MessageSquare },
   { id: "logs", icon: ScrollText },
   { id: "settings", icon: Settings },
@@ -65,8 +69,9 @@ export default function Page() {
               </SheetTrigger>
               <SheetContent side="left" className="w-[260px] bg-[hsl(240_6%_4%)] border-border p-0">
                 <div className="flex h-14 items-center gap-2 border-b border-border px-5">
-                  <span className="text-lg font-bold tracking-tight text-foreground">
-                    Claw<span className="text-primary">Bridge</span>
+                  <span className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
+                    <span>🦞</span>
+                    <span>Claw<span className="text-primary">Bridge</span></span>
                   </span>
                 </div>
                 <nav className="space-y-1 p-3">
@@ -111,11 +116,12 @@ export default function Page() {
         <main
           className={cn(
             "flex-1 overflow-y-auto p-4 md:p-6",
-            currentView === "playground" && "overflow-hidden p-3 md:p-4"
+            (currentView === "playground" || currentView === "arena") && "overflow-hidden p-3 md:p-4"
           )}
-          style={currentView === "playground" ? { display: "flex", flexDirection: "column" } : undefined}
+          style={(currentView === "playground" || currentView === "arena") ? { display: "flex", flexDirection: "column" } : undefined}
         >
           {currentView === "dashboard" && <DashboardView onNavigate={navigate} />}
+          {currentView === "arena" && <ArenaView />}
           {currentView === "playground" && <PlaygroundView />}
           {currentView === "logs" && <LogsView />}
           {currentView === "settings" && <SettingsView />}

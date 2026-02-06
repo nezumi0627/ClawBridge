@@ -1,6 +1,6 @@
 {
   "name": "clawbridge",
-  "version": "0.1.0-beta",
+  "version": "0.3.1+beta",
   "description": "Enterprise-grade Free AI bridge for OpenClaw (via Pollinations)",
   "main": "server.js",
   "bin": {
@@ -9,9 +9,12 @@
   },
   "scripts": {
     "start": "node server.js",
+    "dev": "./dev.sh",
     "install-tool": "node bin/install.js",
-    "ui:build": "cd web && pnpm install && pnpm build && rm -rf ../public/* && cp -r out/* ../public/",
-    "ui:dev": "cd web && pnpm dev"
+    "ui:build": "cd web && npm run build && rm -rf ../public/* && cp -r out/* ../public/",
+    "ui:dev": "cd web && npm run dev",
+    "ui:watch": "nodemon --watch web --ext ts,tsx,js,jsx,css,json --ignore web/out --ignore web/.next --exec \"npm run ui:build\"",
+    "dev:backend": "nodemon --watch src --watch server.js --exec \"NODE_ENV=development node server.js\""
   },
   "author": "nezumi0627",
   "license": "MIT",
@@ -22,5 +25,9 @@
     "express": "^4.21.2",
     "figlet": "^1.8.0",
     "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^3.0.5",
+    "nodemon": "^3.1.11"
   }
 }

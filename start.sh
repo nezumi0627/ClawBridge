@@ -13,6 +13,10 @@ if systemctl --user is-active --quiet clawbridge; then
     exit 0
 fi
 
-# 3. Start in foreground if no service
+# 3. Build UI
+echo "[Build] Compiling frontend assets..."
+npm run ui:build
+
+# 4. Start in foreground if no service
 echo "[Start] Launching ClawBridge v0.6.0..."
 npm start

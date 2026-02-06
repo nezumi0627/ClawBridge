@@ -23,11 +23,9 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
   const [g4fStatus, setG4fStatus] = useState<string | null>(null)
   const [g4fModels, setG4fModels] = useState<number>(0)
   const [memUsage, setMemUsage] = useState("--")
-  const [version, setVersion] = useState("v0.3.0")
+  const [version, setVersion] = useState(process.env.NEXT_PUBLIC_APP_VERSION || "v0.0.0")
   const [port, setPort] = useState(1337)
-  const [bars] = useState(() =>
-    Array.from({ length: 12 }, () => Math.floor(Math.random() * 70) + 20)
-  )
+  const [fastestModels, setFastestModels] = useState<any[]>([])
 
   useEffect(() => {
     async function checkStatus() {
@@ -47,130 +45,167 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
         setG4fStatus("offline")
       }
     }
+
+    async function fetchFastest() {
+      try {
+        const res = await fetch("/api/test/working")
+        const data = await res.json()
+        if (data.working) {
+          setFastestModels(data.working.slice(0, 4))
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
     checkStatus()
+    fetchFastest()
   }, [])
 
   return (
     <div className="space-y-6 animate-fade-in-up">
       {/* Metric Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="bg-card border-border">
+        <Card className="bg-card border-border border-l-4 border-l-primary shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-5">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">ClawBridge Core</p>
-                <p className="text-2xl font-bold text-foreground">{version}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">ClawBridge Core</p>
+                <p className="text-3xl font-black text-foreground">{version}</p>
               </div>
-              <div className="rounded-lg bg-primary/10 p-2.5">
-                <Server className="h-5 w-5 text-primary" />
+              <div className="rounded-xl bg-primary/10 p-3 shadow-inner">
+                <Server className="h-6 w-6 text-primary" />
               </div>
             </div>
-            <Badge
-              variant="outline"
-              className="mt-3 border-[hsl(var(--success))] bg-[hsl(var(--success))]/10 text-[hsl(var(--success))]"
-            >
-              RUNNING (Port {port})
-            </Badge>
+            <div className="mt-4 flex items-center gap-2">
+              <Badge
+                variant="outline"
+                className="border-emerald-500/30 bg-emerald-500/10 text-emerald-500 font-bold px-2 py-0.5"
+              >
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse" />
+                ACTIVE
+              </Badge>
+              <span className="text-xs font-mono font-bold text-muted-foreground bg-secondary/80 px-2.5 py-1 rounded-lg border border-border/50">
+                PORT {port}
+              </span>
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border">
+        <Card className="bg-card border-border border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-5">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">G4F Server</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">G4F Server</p>
                 {g4fStatus === null && (
-                  <p className="text-2xl font-bold text-muted-foreground">Checking...</p>
+                  <p className="text-3xl font-black text-muted-foreground animate-pulse">Checking...</p>
                 )}
                 {g4fStatus === "online" && (
-                  <p className="text-2xl font-bold text-foreground">ONLINE</p>
+                  <p className="text-3xl font-black text-foreground">ONLINE</p>
                 )}
                 {g4fStatus === "offline" && (
-                  <p className="text-2xl font-bold text-[hsl(var(--destructive))]">OFFLINE</p>
+                  <p className="text-3xl font-black text-destructive">OFFLINE</p>
                 )}
                 {g4fStatus === "error" && (
-                  <p className="text-2xl font-bold text-[hsl(var(--destructive))]">ERROR</p>
+                  <p className="text-3xl font-black text-destructive">ERROR</p>
                 )}
               </div>
-              <div className="rounded-lg bg-[hsl(var(--info))]/10 p-2.5">
-                <Cpu className="h-5 w-5 text-[hsl(var(--info))]" />
+              <div className="rounded-xl bg-blue-500/10 p-3 shadow-inner">
+                <Cpu className="h-6 w-6 text-blue-500" />
               </div>
             </div>
-            <p className="mt-3 text-xs text-muted-foreground">
-              Backend: Python 3.12 {g4fModels > 0 && `/ ${g4fModels} models`}
+            <p className="mt-4 text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+              <Badge variant="outline" className="text-[10px] font-mono border-blue-500/20 bg-blue-500/5 text-blue-400">
+                PY 3.12
+              </Badge>
+              {g4fModels > 0 && <span className="opacity-70">/ {g4fModels} models available</span>}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-card border-border">
+        <Card className="bg-card border-border border-l-4 border-l-amber-500 shadow-sm hover:shadow-md transition-shadow">
           <CardContent className="p-5">
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Memory Usage</p>
-                <p className="text-2xl font-bold text-foreground">{memUsage}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/70">Memory Usage</p>
+                <p className="text-3xl font-black text-foreground">{memUsage}</p>
               </div>
-              <div className="rounded-lg bg-[hsl(var(--warning))]/10 p-2.5">
-                <HardDrive className="h-5 w-5 text-[hsl(var(--warning))]" />
+              <div className="rounded-xl bg-amber-500/10 p-3 shadow-inner">
+                <HardDrive className="h-6 w-6 text-amber-500" />
               </div>
             </div>
-            <p className="mt-3 text-xs text-muted-foreground">Node.js Heap</p>
+            <p className="mt-4 text-xs font-medium text-muted-foreground">
+              <span className="text-amber-500 font-bold mr-1">V8 Engine</span> Runtime Heap
+            </p>
           </CardContent>
         </Card>
       </div>
 
+      {/* Recommended Models */}
+      <Card className="bg-card border-border border-t-2 border-t-primary/20 overflow-hidden">
+        <CardHeader className="pb-4 bg-secondary/30">
+          <CardTitle className="flex items-center gap-2 text-base font-bold text-foreground">
+            <Zap className="h-4.5 w-4.5 text-primary" />
+            Fastest & Recommended Models
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-5">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {fastestModels.length > 0 ? fastestModels.map((model, i) => (
+              <div key={i} className="flex flex-col p-4 rounded-xl bg-secondary/40 border border-border/50 hover:bg-secondary/60 hover:border-primary/30 transition-all group">
+                <div className="flex items-center justify-between mb-3">
+                  <Badge variant="outline" className="bg-primary/10 border-primary/20 text-primary text-[10px] font-bold px-1.5">
+                    {model.provider}
+                  </Badge>
+                  <Activity className="h-3 w-3 text-emerald-500 group-hover:animate-pulse" />
+                </div>
+                <span className="text-sm font-bold truncate mb-2">{model.model}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-lg border border-primary/10">
+                    {model.responseTime}ms
+                  </span>
+                </div>
+              </div>
+            )) : Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-24 rounded-xl bg-secondary/20 border border-border/50 animate-pulse" />
+            ))}
+          </div>
+          <p className="mt-4 text-[10px] font-medium text-muted-foreground/60 flex items-center gap-1.5 uppercase tracking-wider">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            Live latency stats from latest system tests
+          </p>
+        </CardContent>
+      </Card>
+
       {/* Quick Start */}
       <Card className="bg-card border-border">
         <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
-            <Rocket className="h-4 w-4 text-primary" />
+          <CardTitle className="flex items-center gap-2 text-base font-bold text-foreground">
+            <Rocket className="h-4.5 w-4.5 text-primary" />
             Quick Start
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-3">
-          <Button onClick={() => onNavigate("playground")} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_4px_14px_hsl(28_90%_54%/0.3)]">
-            <MessageSquare className="mr-2 h-4 w-4" />
-            Launch Playground
+        <CardContent className="flex flex-wrap gap-4 p-6 pt-2">
+          <Button onClick={() => onNavigate("playground")} className="h-12 px-6 bg-primary text-primary-foreground font-bold rounded-xl hover:bg-primary/90 shadow-[0_8px_20px_rgba(var(--primary-rgb),0.3)] transition-all hover:translate-y-[-2px]">
+            <MessageSquare className="mr-2 h-5 w-5" />
+            Open Playground
           </Button>
           <Button
             variant="outline"
-            className="border-border bg-secondary text-secondary-foreground hover:bg-accent"
+            className="h-12 px-6 border-border bg-secondary/80 text-foreground font-bold rounded-xl hover:bg-secondary transition-all"
             onClick={() => window.open("/v1/models", "_blank")}
           >
-            <ExternalLink className="mr-2 h-4 w-4" />
+            <ExternalLink className="mr-2 h-5 w-5" />
             Models API
           </Button>
           <Button
             variant="outline"
-            className="border-border bg-secondary text-secondary-foreground hover:bg-accent"
+            className="h-12 px-6 border-border bg-secondary/80 text-foreground font-bold rounded-xl hover:bg-secondary transition-all"
             onClick={() => onNavigate("connectivity")}
           >
-            <Zap className="mr-2 h-4 w-4" />
-            Connectivity Test
+            <Zap className="mr-2 h-5 w-5" />
+            Test Models
           </Button>
-        </CardContent>
-      </Card>
-
-      {/* Resource Monitor */}
-      <Card className="bg-card border-border">
-        <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
-            <Activity className="h-4 w-4 text-primary" />
-            Resource Monitor
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex h-24 items-end gap-1.5">
-            {bars.map((h, i) => (
-              <div
-                key={i}
-                className="flex-1 rounded-t bg-gradient-to-t from-primary to-primary/60 transition-all"
-                style={{ height: `${h}%` }}
-              />
-            ))}
-          </div>
-          <p className="mt-3 text-xs text-muted-foreground">
-            Live requests per minute (visual representation)
-          </p>
         </CardContent>
       </Card>
     </div>

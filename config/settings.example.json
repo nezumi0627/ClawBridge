@@ -22,40 +22,40 @@
       "gpt-4": [
         "llama-3.3-70b-versatile",
         "claude-3-7-sonnet-latest",
-        "gemini-2.5-flash",
+        "gemini-2.1-flash",
         "gpt-4o"
       ],
       "gpt-4o": [
         "llama-3.3-70b-versatile",
         "claude-3-7-sonnet-latest",
         "gpt-4o",
-        "gemini-2.5-flash"
+        "gemini-2.1-flash"
       ],
       "gpt-4o-mini": [
         "llama-3.1-8b-instant",
         "gpt-4o-mini",
-        "gemini-2.5-flash"
+        "gemini-2.1-flash"
       ],
       "claude-3-5-sonnet": [
         "claude-3-7-sonnet-latest",
         "llama-3.3-70b-versatile",
-        "gemini-2.5-flash"
+        "gemini-2.1-flash"
       ],
       "llama-3.1-8b-instant": [
-        "gemini-2.5-flash",
+        "gemini-2.1-flash",
         "gpt-4o-mini"
       ],
-      "gemini-2.5-flash": [
+      "gemini-2.1-flash": [
         "gpt-4o-mini",
         "claude-3-7-sonnet-latest"
       ]
     }
   },
   "openclaw": {
-    "default_model": "gemini-2.5-flash",
+    "default_model": "gemini-2.1-flash",
     "force_provider": {},
     "alias": {
-      "claw-model": "gemini-2.5-flash",
+      "claw-model": "gemini-2.1-flash",
       "best": "gpt-4"
     }
   },

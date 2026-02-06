@@ -91,7 +91,9 @@ export function PlaygroundView() {
         ])
         setStatus({ text: "Failed", variant: "destructive" })
       } else {
-        const content = data.choices?.[0]?.message?.content || "Empty result"
+        const rawContent = data.choices?.[0]?.message?.content || "Empty result"
+        // Filter out metadata lines starting with "-# " (G4F leaks)
+        const content = rawContent.split("\n").filter((line: string) => !line.trim().startsWith("-#")).join("\n").trim()
         const actualProvider = data.provider || provider || "Auto"
         setMessages((prev) => [
           ...prev,
@@ -171,7 +173,7 @@ export function PlaygroundView() {
               <SelectGroup>
                 <SelectLabel className="text-muted-foreground">Recommended (Fast)</SelectLabel>
                 <SelectItem value="gpt-4o-mini">GPT-4o Mini (Pollinations)</SelectItem>
-                <SelectItem value="gemini-2.1-flash">Gemini 2.1 Flash (Google)</SelectItem>
+                <SelectItem value="gemini-2.1-flash">Gemini 2.5 Flash (Google)</SelectItem>
                 <SelectItem value="llama-3.1-8b-instant">Llama 3.1 8B (Groq)</SelectItem>
               </SelectGroup>
               <SelectGroup>

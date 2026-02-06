@@ -35,7 +35,7 @@ API キーがない場合、以下のリソースから「今、動くもの」�
 
 ### 💠 Google Gemini
 - **役割**: 信頼性の高い主力エンジン。
-- **モデル**: `gemini-2.5-flash`, `gemini-2.5-pro`, `gemini-2.0-flash`
+- **モデル**: `gemini-2.1-flash`, `gemini-2.5-pro`, `gemini-2.0-flash`
 - **特徴**: 100万トークンを超える巨大な文脈理解。
 
 ---
@@ -47,7 +47,7 @@ ClawBridge の真価は、特定のモデルやプロバイダーがダウンし
 ```json
 // 設定例: gpt-4o-mini が失敗したら gemini へ、それもダメなら llama へ
 "fallbacks": {
-  "gpt-4o-mini": ["gemini-2.5-flash", "llama-3.1-8b"]
+  "gpt-4o-mini": ["gemini-2.1-flash", "llama-3.1-8b"]
 }
 ```
 

@@ -22,7 +22,7 @@ class GeminiProvider extends BaseProvider {
         const finalMessages = processMessagesForG4F(messages, tools);
 
         // Gemini Model IDs
-        let targetModel = 'gemini-2.5-flash';
+        let targetModel = 'gemini-2.1-flash';
         if (model.includes('pro')) targetModel = 'gemini-2.5-pro';
         else if (model.includes('2.0-flash')) targetModel = 'gemini-2.0-flash';
 

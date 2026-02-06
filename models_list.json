@@ -1,7 +1,7 @@
 {
   "models": [
     {
-      "name": "models/gemini-2.5-flash",
+      "name": "models/gemini-2.1-flash",
       "version": "001",
       "displayName": "Gemini 2.5 Flash",
       "description": "Stable version of Gemini 2.5 Flash, our mid-size multimodal model that supports up to 1 million tokens, released in June of 2025.",
@@ -147,8 +147,8 @@
       "thinking": true
     },
     {
-      "name": "models/gemini-2.5-flash-preview-tts",
-      "version": "gemini-2.5-flash-exp-tts-2025-05-19",
+      "name": "models/gemini-2.1-flash-preview-tts",
+      "version": "gemini-2.1-flash-exp-tts-2025-05-19",
       "displayName": "Gemini 2.5 Flash Preview TTS",
       "description": "Gemini 2.5 Flash Preview TTS",
       "inputTokenLimit": 8192,
@@ -321,7 +321,7 @@
       "thinking": true
     },
     {
-      "name": "models/gemini-2.5-flash-lite",
+      "name": "models/gemini-2.1-flash-lite",
       "version": "001",
       "displayName": "Gemini 2.5 Flash-Lite",
       "description": "Stable version of Gemini 2.5 Flash-Lite, released in July of 2025",
@@ -340,7 +340,7 @@
       "thinking": true
     },
     {
-      "name": "models/gemini-2.5-flash-image",
+      "name": "models/gemini-2.1-flash-image",
       "version": "2.0",
       "displayName": "Nano Banana",
       "description": "Gemini 2.5 Flash Preview Image",
@@ -357,7 +357,7 @@
       "maxTemperature": 1
     },
     {
-      "name": "models/gemini-2.5-flash-preview-09-2025",
+      "name": "models/gemini-2.1-flash-preview-09-2025",
       "version": "Gemini 2.5 Flash Preview 09-2025",
       "displayName": "Gemini 2.5 Flash Preview Sep 2025",
       "description": "Gemini 2.5 Flash Preview Sep 2025",
@@ -376,7 +376,7 @@
       "thinking": true
     },
     {
-      "name": "models/gemini-2.5-flash-lite-preview-09-2025",
+      "name": "models/gemini-2.1-flash-lite-preview-09-2025",
       "version": "2.5-preview-09-25",
       "displayName": "Gemini 2.5 Flash-Lite Preview Sep 2025",
       "description": "Preview release (Septempber 25th, 2025) of Gemini 2.5 Flash-Lite",
@@ -680,7 +680,7 @@
       ]
     },
     {
-      "name": "models/gemini-2.5-flash-native-audio-latest",
+      "name": "models/gemini-2.1-flash-native-audio-latest",
       "version": "Gemini 2.5 Flash Native Audio Latest",
       "displayName": "Gemini 2.5 Flash Native Audio Latest",
       "description": "Latest release of Gemini 2.5 Flash Native Audio",
@@ -697,8 +697,8 @@
       "thinking": true
     },
     {
-      "name": "models/gemini-2.5-flash-native-audio-preview-09-2025",
-      "version": "gemini-2.5-flash-preview-native-audio-dialog-2025-05-19",
+      "name": "models/gemini-2.1-flash-native-audio-preview-09-2025",
+      "version": "gemini-2.1-flash-preview-native-audio-dialog-2025-05-19",
       "displayName": "Gemini 2.5 Flash Native Audio Preview 09-2025",
       "description": "Gemini 2.5 Flash Native Audio Preview 09-2025",
       "inputTokenLimit": 131072,
@@ -714,7 +714,7 @@
       "thinking": true
     },
     {
-      "name": "models/gemini-2.5-flash-native-audio-preview-12-2025",
+      "name": "models/gemini-2.1-flash-native-audio-preview-12-2025",
       "version": "12-2025",
       "displayName": "Gemini 2.5 Flash Native Audio Preview 12-2025",
       "description": "Gemini 2.5 Flash Native Audio Preview 12-2025",

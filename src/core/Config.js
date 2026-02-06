@@ -71,7 +71,7 @@ class ConfigManager {
     }
 
     get(key) {
-        // First check if key exists directly (e.g. "providers.fallbacks.gemini-2.5-flash")
+        // First check if key exists directly (e.g. "providers.fallbacks.gemini-2.1-flash")
         // But since this.config is nested, this check is tricky for nested paths.
         // Instead, handle specific cases where keys might contain dots (like model names) inside 'fallbacks'
 

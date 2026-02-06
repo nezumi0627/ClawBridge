@@ -19,12 +19,13 @@ class TestService {
         this.results = [];
         this.isRunning = false;
         this.lastRunTime = null;
+        this.abortController = null;
 
         // Define model-provider mappings
         this.modelProviderMap = {
             // Google Gemini (Free Tier)
             'gemini': [
-                'gemini-2.5-flash'
+                'gemini-2.1-flash'
             ],
             // Groq (Free Tier)
             'groq': [
@@ -201,6 +202,7 @@ class TestService {
         }
 
         this.isRunning = true;
+        this.abortController = new AbortController();
         this.results = [];
         const startTime = Date.now();
 
@@ -220,7 +222,11 @@ class TestService {
 
         for (const batch of batches) {
             const batchPromises = batch.map(async (combo) => {
+                if (this.abortController?.signal?.aborted) return null;
                 const result = await this.testCombination(combo.provider, combo.model, options.prompt);
+
+                if (this.abortController?.signal?.aborted) return null;
+
                 this.results.push(result);
                 completed++;
 
@@ -232,6 +238,11 @@ class TestService {
             });
 
             await Promise.all(batchPromises);
+
+            if (this.abortController?.signal?.aborted) {
+                Logger.info('Test suite aborted by user', 'TestService');
+                break;
+            }
 
             // Small delay between batches to avoid overwhelming
             if (batches.indexOf(batch) < batches.length - 1) {
@@ -368,6 +379,30 @@ class TestService {
                 error: r.error,
                 errorType: r.errorType
             }));
+    }
+
+    /**
+     * Stop currently running tests
+     */
+    stopTests() {
+        if (this.isRunning && this.abortController) {
+            this.abortController.abort();
+            this.isRunning = false;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update or add a result to the internal registry
+     */
+    updateResult(result) {
+        const index = this.results.findIndex(r => r.provider === result.provider && r.model === result.model);
+        if (index !== -1) {
+            this.results[index] = result;
+        } else {
+            this.results.push(result);
+        }
     }
 
     /**
