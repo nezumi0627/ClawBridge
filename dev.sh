@@ -41,6 +41,7 @@ else
     echo -e "\033[1;32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     
     # Start Backend with proxying enabled
+    export NODE_OPTIONS="--max-old-space-size=4096"
     NODE_ENV=development node server.js &
     BACKEND_PID=$!
 
