@@ -21,7 +21,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  turbopack: {},
+  // Fix: Set turbopack root to web directory to avoid lockfile warning
+  turbopack: {
+    root: __dirname,
+  },
+  // Fix: Allow cross-origin requests from localhost in development
+  allowedDevOrigins: ['http://127.0.0.1:1337', 'http://localhost:1337'],
   // In development, we use rewrites to proxy to the backend
   ...(process.env.NODE_ENV !== 'production' ? {
     async rewrites() {
