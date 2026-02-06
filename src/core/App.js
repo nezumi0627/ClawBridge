@@ -28,7 +28,20 @@ class App {
                 target: 'http://127.0.0.1:3000',
                 changeOrigin: true,
                 ws: true, // support hot reload websocket
-                logLevel: 'silent'
+                logLevel: 'debug',
+                onError: (err, req, res) => {
+                    // If proxy fails (e.g. Next.js not running), fall back to static files
+                    if (req.path.startsWith('/api') || req.path.startsWith('/v1')) {
+                        res.status(502).json({ error: 'Backend proxy error' });
+                    } else {
+                        // Serve from public/ as fallback
+                        res.sendFile(path.join(process.cwd(), 'public', 'index.html'), (fileErr) => {
+                            if (fileErr) {
+                                res.status(502).send('Frontend server not ready and no static build found.');
+                            }
+                        });
+                    }
+                }
             });
 
             this.app.use((req, res, next) => {
@@ -36,11 +49,21 @@ class App {
                 if (req.path.startsWith('/api') || req.path.startsWith('/v1')) {
                     return next();
                 }
-                // Proxy everything else to Next.js (port 3000)
+
+                // Try to serve static files first if they exist (optional, but safer)
+                // For now, try proxying and use onError fallback
                 return nextProxy(req, res, next);
             });
+
+            // Also serve static files as a second fallback in dev mode
+            this.app.use(express.static(path.join(process.cwd(), 'public')));
         } else {
             this.app.use(express.static(path.join(process.cwd(), 'public')));
+            // Handle SPA routing for static build
+            this.app.get('*', (req, res, next) => {
+                if (req.path.startsWith('/api') || req.path.startsWith('/v1')) return next();
+                res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+            });
         }
     }
 

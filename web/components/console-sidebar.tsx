@@ -99,7 +99,7 @@ export function ConsoleSidebar({ currentView, onNavigate }: ConsoleSidebarProps)
               <div className="absolute -bottom-14 left-8 z-10">
                 <Avatar className="h-28 w-28 border-4 border-background shadow-xl">
                   <AvatarImage
-                    src="https://github.com/nezumi0627.png"
+                    src="/avatar-nezumi.png"
                     alt="nezumi0627"
                   />
                   <AvatarFallback className="text-3xl font-bold bg-primary text-primary-foreground">
@@ -198,7 +198,7 @@ export function ConsoleSidebar({ currentView, onNavigate }: ConsoleSidebarProps)
               {/* Footer */}
               <div className="flex justify-between items-center pt-6 border-t border-border/50">
                 <div className="flex items-center gap-2 font-black tracking-tighter italic">
-                  <span>CLAW BRIDGE</span>
+                  <span>🦞CLAW BRIDGE</span>
                 </div>
 
                 <div className="flex flex-col items-end">
