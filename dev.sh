@@ -21,18 +21,13 @@ echo -e "\033[1;32m━━━━━━━━━━━━━━━━━━━━�
 echo -e "\033[1;32m🦞 ClawBridge Development Mode\033[0m"
 
 if [ "$FAST_MODE" = true ]; then
-    # Fast mode: Build once, serve static (like start.sh but foreground)
+    # Fast mode: Build once, serve static
     echo -e "\033[1;33m   Mode: Fast (no hot reload)\033[0m"
     echo -e "\033[1;34m   URL: http://127.0.0.1:1337\033[0m"
     echo -e "\033[1;32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     
-    # Build the UI
     cd web && npm run build && cd ..
-    # Clean and move files to public
     rm -rf public/* && cp -r web/out/* public/
-    
-    # Start Backend in production style (serves static files from /public)
-    # Don't set NODE_ENV=development here to avoid proxying
     node server.js
 else
     # Normal mode: Hot reload enabled
@@ -40,16 +35,24 @@ else
     echo -e "\033[1;34m   URL: http://127.0.0.1:1337\033[0m"
     echo -e "\033[1;32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     
-    # Start Backend with proxying enabled
-    export NODE_OPTIONS="--max-old-space-size=4096"
+    # WSL Memory Optimization
+    export NODE_OPTIONS="--max-old-space-size=2048"
+    
+    # Start Backend
     NODE_ENV=development node server.js &
     BACKEND_PID=$!
 
-    # Start Frontend Dev Server
+    # Start Frontend
     (cd web && npm run dev -- --port 3000) &
     FRONTEND_PID=$!
 
-    # Handle shutdown
-    trap "kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit" SIGINT SIGTERM
+    # Handle shutdown (Clean up entire process tree to prevent WSL memory leaks)
+    cleanup() {
+        echo -e '\n\033[1;33m[Stop] Cleaning up all processes...\033[0m'
+        pkill -P $$ 2>/dev/null
+        kill $BACKEND_PID $FRONTEND_PID 2>/dev/null
+        exit
+    }
+    trap cleanup SIGINT SIGTERM
     wait
 fi
