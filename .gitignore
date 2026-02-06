@@ -1,3 +1,11 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
 # python generated files
 __pycache__/
 *.py[oc]
@@ -5,10 +13,13 @@ build/
 dist/
 wheels/
 *.egg-info
+.ipynb_checkpoints/
 
 # venv
-.venv
-gvenv
+.venv/
+gvenv/
+venv/
+ENV/
 
 # logs
 *.log
@@ -21,9 +32,16 @@ web/node_modules/
 # local config / secrets
 config/settings.json
 .env
-config/har
-config/cookies
+config/har/
+config/cookies/
 
 # web build artifacts
 web/.next/
 web/out/
+public/*
+!public/placeholder*.svg
+
+# Backups
+*_old/
+*.bak
+*.swp
