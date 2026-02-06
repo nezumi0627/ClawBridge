@@ -1,0 +1,105 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+
+const args = process.argv.slice(2);
+const command = args[0];
+
+const CONFIG_PATH = path.join(__dirname, '..', 'config', 'settings.json');
+const API_URL = 'http://127.0.0.1:1337/api';
+
+function showHelp() {
+    console.log(`
+ClawBridge CLI
+--------------
+Usage:
+  clawbridge status       Show current status
+  clawbridge config       Show current config
+  clawbridge set <key> <val>  Update config (e.g. clawbridge set logging.level debug)
+  clawbridge models       List available models
+    `);
+}
+
+async function fetchApi(endpoint, method = 'GET', body = null) {
+    return new Promise((resolve, reject) => {
+        const headers = body ? { 'Content-Type': 'application/json' } : {};
+        const req = http.request(`${API_URL}${endpoint}`, { method, headers }, res => {
+            let data = '';
+            res.on('data', c => data += c);
+            res.on('end', () => resolve(JSON.parse(data)));
+        });
+        req.on('error', reject);
+        if (body) req.write(JSON.stringify(body));
+        req.end();
+    });
+}
+
+async function main() {
+    try {
+        if (!command || command === 'help') {
+            showHelp();
+            return;
+        }
+
+        if (command === 'status') {
+            const status = await fetchApi('/status');
+            console.log(JSON.stringify(status, null, 2));
+        } else if (command === 'config') {
+            const config = await fetchApi('/config');
+            console.log(JSON.stringify(config, null, 2));
+        } else if (command === 'models') {
+            const models = await fetchApi('/../v1/models');
+            console.log(models.data.map(m => m.id).join('\n'));
+        } else if (command === 'set') {
+            const key = args[1];
+            const val = args[2];
+            if (!key || !val) {
+                console.error('Usage: clawbridge set <key> <value>');
+                return;
+            }
+            // Simple type guessing
+            let typedVal = val;
+            if (val === 'true') typedVal = true;
+            if (val === 'false') typedVal = false;
+            if (!isNaN(val)) typedVal = Number(val);
+
+            const payload = {}; 
+            // construct nested object from dot notation is hard for generic update via API 
+            // unless API supports partial deep patch.
+            // Our API implementation uses Config.save(req.body) which does shallow merge if not handled recursively there.
+            // Actually ConfigManager.set handles dot notation but the API endpoint expects a full or partial object.
+            // Let's rely on reading file, updating, and calling API to reload or just updating file.
+            // But updating file doesn't hot-reload memory unless we restart or use API.
+            
+            // For now, let's just use the API with a reconstructed object or specific endpoint?
+            // The API implementation: Config.save(req.body). Config.save does { ...config, ...data }. Warning: Shallow merge for top level keys if not careful.
+            
+            // To be safe, let's just warn CLI limitation or implement properly.
+            // A better way for CLI: Read config, update locally, push to API.
+            
+            const current = await fetchApi('/config');
+            
+            // Update nested
+            const keys = key.split('.');
+            let target = current;
+            for (let i = 0; i < keys.length - 1; i++) {
+                target[keys[i]] = target[keys[i]] || {};
+                target = target[keys[i]];
+            }
+            target[keys[keys.length - 1]] = typedVal;
+            
+            await fetchApi('/config', 'POST', current);
+            console.log(`Updated ${key} to ${val}`);
+        } else {
+            console.log('Unknown command');
+            showHelp();
+        }
+    } catch (e) {
+        console.error('Error:', e.message);
+        console.error('Ensure ClawBridge is running.');
+    }
+}
+
+main();

@@ -1,0 +1,26 @@
+{
+  "name": "clawbridge",
+  "version": "0.1.0-beta",
+  "description": "Enterprise-grade Free AI bridge for OpenClaw (via Pollinations)",
+  "main": "server.js",
+  "bin": {
+    "clawbridge": "./start.sh",
+    "clawbridge-install": "./bin/install.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "install-tool": "node bin/install.js",
+    "ui:build": "cd web && pnpm install && pnpm build && rm -rf ../public/* && cp -r out/* ../public/",
+    "ui:dev": "cd web && pnpm dev"
+  },
+  "author": "nezumi0627",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cors": "^2.8.6",
+    "enquirer": "^2.3.6",
+    "express": "^4.21.2",
+    "figlet": "^1.8.0",
+    "node-fetch": "^2.7.0"
+  }
+}

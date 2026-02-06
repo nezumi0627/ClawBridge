@@ -1,0 +1,17 @@
+# logs
+*.log
+clawbridge.log
+
+# node_modules
+node_modules/
+web/node_modules/
+
+# local config / secrets
+config/settings.json
+.env
+config/har
+config/cookies
+
+# web build artifacts
+web/.next/
+web/out/

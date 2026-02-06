@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 6% 6%;
+    --foreground: 240 5% 96%;
+    --card: 240 5% 8%;
+    --card-foreground: 240 5% 96%;
+    --popover: 240 5% 8%;
+    --popover-foreground: 240 5% 96%;
+    --primary: 28 90% 54%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4% 14%;
+    --secondary-foreground: 240 5% 96%;
+    --muted: 240 4% 14%;
+    --muted-foreground: 240 4% 58%;
+    --accent: 240 4% 14%;
+    --accent-foreground: 240 5% 96%;
+    --destructive: 0 68% 56%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 28 90% 54%;
+    --radius: 0.625rem;
+    --chart-1: 28 90% 54%;
+    --chart-2: 152 60% 52%;
+    --chart-3: 210 70% 60%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 0 68% 56%;
+    --sidebar-background: 240 6% 4%;
+    --sidebar-foreground: 240 5% 96%;
+    --sidebar-primary: 28 90% 54%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4% 12%;
+    --sidebar-accent-foreground: 240 5% 96%;
+    --sidebar-border: 240 4% 14%;
+    --sidebar-ring: 28 90% 54%;
+    --success: 152 68% 52%;
+    --success-foreground: 0 0% 100%;
+    --warning: 40 92% 66%;
+    --warning-foreground: 0 0% 10%;
+    --info: 210 80% 66%;
+    --info-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(240 4% 22%);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(240 4% 30%);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.35s ease-out forwards;
+}
+
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 hsla(152, 68%, 52%, 0.5); }
+  70% { box-shadow: 0 0 0 8px hsla(152, 68%, 52%, 0); }
+  100% { box-shadow: 0 0 0 0 hsla(152, 68%, 52%, 0); }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}

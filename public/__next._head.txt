@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[40852,["/_next/static/chunks/567ab94dea04dd44.js"],"ViewportBoundary"]
+3:I[40852,["/_next/static/chunks/567ab94dea04dd44.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"miIuTTSYYoLmIWyVL4biY","rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#f48120"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"ClawBridge Console"}],["$","meta","1",{"name":"description","content":"AI Gateway & Model Router Console"}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}

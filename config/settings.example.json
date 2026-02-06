@@ -1,0 +1,68 @@
+{
+  "server": {
+    "port": 1337,
+    "host": "0.0.0.0"
+  },
+  "g4f": {
+    "port": 1338,
+    "enabled": true
+  },
+  "gemini": {
+    "api_key": "YOUR_GEMINI_API_KEY_HERE"
+  },
+  "groq": {
+    "api_key": "YOUR_GROQ_API_KEY_HERE"
+  },
+  "puter": {
+    "api_key": "YOUR_PUTER_API_KEY_HERE"
+  },
+  "providers": {
+    "default": "g4f",
+    "fallbacks": {
+      "gpt-4": [
+        "llama-3.3-70b-versatile",
+        "claude-3-7-sonnet-latest",
+        "gemini-2.5-flash",
+        "gpt-4o"
+      ],
+      "gpt-4o": [
+        "llama-3.3-70b-versatile",
+        "claude-3-7-sonnet-latest",
+        "gpt-4o",
+        "gemini-2.5-flash"
+      ],
+      "gpt-4o-mini": [
+        "llama-3.1-8b-instant",
+        "gpt-4o-mini",
+        "gemini-2.5-flash"
+      ],
+      "claude-3-5-sonnet": [
+        "claude-3-7-sonnet-latest",
+        "llama-3.3-70b-versatile",
+        "gemini-2.5-flash"
+      ],
+      "llama-3.1-8b-instant": [
+        "gemini-2.5-flash",
+        "gpt-4o-mini"
+      ],
+      "gemini-2.5-flash": [
+        "gpt-4o-mini",
+        "claude-3-7-sonnet-latest"
+      ]
+    }
+  },
+  "openclaw": {
+    "default_model": "gemini-2.5-flash",
+    "force_provider": {},
+    "alias": {
+      "claw-model": "gemini-2.5-flash",
+      "best": "gpt-4"
+    }
+  },
+  "models": {},
+  "logging": {
+    "level": "info",
+    "file": "clawbridge.log"
+  }
+}
+
