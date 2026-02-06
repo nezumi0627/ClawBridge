@@ -40,10 +40,10 @@ export function ArenaView() {
     useEffect(() => {
         async function fetchModels() {
             try {
-                const res = await fetch("/api/test/working")
+                const res = await fetch("/api/model-providers")
                 const data = await res.json()
-                if (data.working && data.working.length > 0) {
-                    setAvailableModels(data.working.map((m: any) => ({ id: m.model, display: m.display })))
+                if (data.combinations && data.combinations.length > 0) {
+                    setAvailableModels(data.combinations.map((m: any) => ({ id: m.model, display: m.display })))
                 } else {
                     setAvailableModels([
                         { id: "gpt-4o-mini", display: "gpt-4o-mini (@pollinations)" },
